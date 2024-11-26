@@ -1,0 +1,124 @@
+import random
+import os
+from datetime import datetime
+from colorama import init, Fore, Back, Style
+
+init(autoreset=True)
+def generate_credit_card_number(bin_format):
+    out_cc = ""
+    # Sustituir x por numeros
+    for i in range(15):
+        if bin_format[i] in ("0", "1", "2", "3", "4", "5", "6", "7", "8", "9"):
+            out_cc += bin_format[i]
+        elif bin_format[i] in ("x"):
+            out_cc += str(random.randint(0,9))
+        else:
+            raise ValueError(f"Caracter no válido en el formato: {bin_format}")
+            
+    for i in range(10):
+        checksum_check = out_cc + str(i)
+        if card_luhn_checksum_is_valid(checksum_check):
+            out_cc += str(i)
+            break
+
+    if len(out_cc) != 16:
+        raise ValueError(f"El formato del bin debe tener 16 digitos: 654321xxxxxxxxxx ")
+
+    return out_cc
+
+def card_luhn_checksum_is_valid(card_number):
+    sum = 0
+    num_digits = len(card_number)
+    oddeven = num_digits & 1
+
+    for count in range(num_digits):
+        digit = int(card_number[count])
+        if not (( count & 1 ) ^ oddeven ):
+            digit *= 2
+        if digit > 9:
+            digit -= 9
+        sum += digit
+
+    return (sum % 10) == 0
+
+def main():
+    while True:
+        os.system('clear')
+        print("**************************************")
+        print("*        *       PRO-MAX-TERMUX      *")
+        print("*        *                           *")
+        print("*  VISA  *    1234 5678 1510 2306    *")
+        print("*        *                           *")
+        print("*        *       Premium_Max_4       *")
+        print("*        *          11/24            *")
+        print("*        *                           *")
+        print("**************************************")
+        print(Fore.RED + "1." + Fore.GREEN + " 𝔾𝕖𝕟𝕖𝕣𝕒𝕕𝕠𝕣 𝕕𝕖 𝕋𝕒𝕣𝕛𝕖𝕥𝕒𝕤 𝕡𝕠𝕣 𝔹𝕀ℕ" + Fore.RESET)
+        print(Fore.RED + "2." + Fore.GREEN + " 𝔾𝕖𝕟𝕖𝕣𝕒𝕕𝕠𝕣 𝕕𝕖 ℂℂ (𝕍𝕚𝕤𝕒, 𝕄𝕔...)" + Fore.RESET)
+        print(Fore.RED + "3." + Fore.GREEN + " 𝔾𝕖𝕟𝕖𝕣𝕒𝕕𝕠𝕣 ℕ𝕠𝕞𝕓𝕣𝕖𝕤 𝕪 𝔸𝕡𝕖𝕝𝕝𝕚𝕕𝕠𝕤" + Fore.RESET)
+        print(Fore.RED + "4." + Fore.GREEN + " ℂ𝕙𝕖𝕔𝕜𝕖𝕣 𝔹𝕀ℕ 𝕔𝕠𝕞𝕡𝕝𝕖𝕥𝕠 𝕒𝕝𝕝" + Fore.RESET)
+        print(Fore.RED + "5." + Fore.GREEN + " 𝕄𝕒𝕤 𝕀𝕟𝕗𝕠𝕣𝕞𝕒𝕔𝕚𝕠𝕟 𝕕𝕖 ℙℝ𝕆-𝕄𝔸𝕏-𝕋𝔼ℝ𝕄𝕌𝕏" + Fore.RESET)
+        print(Fore.RED + "6." + Fore.GREEN + " 𝕊𝕒𝕝𝕚𝕣 𝕕𝕖𝕝 𝕞𝕖𝕟𝕦" + Fore.RESET)
+        print("")
+        option = input("𝕊𝕖𝕝𝕖𝕔𝕔𝕚𝕠𝕟𝕖 𝕦𝕟𝕒 𝕠𝕡𝕔𝕚ó𝕟: ")
+        print("")
+        if option == "1":
+            bin_format = input("𝕀𝕟𝕘𝕣𝕖𝕤𝕖 𝔹𝕀ℕ: ")
+            try:
+                month = int(input("𝕀𝕟𝕘𝕣𝕖𝕤𝕖 𝕄𝕖𝕤: "))
+                year = int(input("𝕀𝕟𝕘𝕣𝕖𝕤𝕖 𝔸ñ𝕠: "))
+                n = int(input("𝕀𝕟𝕘𝕣𝕖𝕤𝕖 ℂ𝕒𝕟𝕥𝕚𝕕𝕒𝕕: "))
+                    
+                for i in range(n):
+                    cc_number = generate_credit_card_number(bin_format)
+                    cvv = str(random.randint(100, 999))
+                    amount = str(random.randint(1, 20000))
+                    date = f"{month}/{year % 100}"
+                    
+                    print(f"\n𝑇𝑎𝑟𝑗𝑒𝑡𝑎 𝑑𝑒 𝑐𝑟𝑒𝑑𝑖𝑡𝑜: {Fore.GREEN}{cc_number}{Fore.RESET}")
+                    print(f"𝐹𝑒𝑐ℎ𝑎 𝑑𝑒 𝑒𝑥𝑝𝑖𝑟𝑎𝑐𝑖𝑜𝑛: {Fore.GREEN}{date}{Fore.RESET}")
+                    print(f"𝐶𝑜𝑑𝑖𝑔𝑜 𝑑𝑒 𝑠𝑒𝑔𝑢𝑟𝑖𝑑𝑎𝑑 𝐶𝑉𝑉: {Fore.RED}{cvv}{Fore.RESET}")
+                    print(f"𝑀𝑜𝑛𝑡𝑜 𝑑𝑒 𝑙𝑎 𝑡𝑟𝑎𝑛𝑠𝑎𝑐𝑐𝑖ó𝑛: {Fore.YELLOW}{amount}{Fore.RESET}\n")
+                    
+            except ValueError as e:
+                print(f"\nError: {str(e)}\n")
+                
+            input("𝑃𝑟𝑒𝑠𝑖𝑜𝑛𝑒 𝐸𝑛𝑡𝑒𝑟 𝑝𝑎𝑟𝑎 𝑐𝑜𝑛𝑡𝑖𝑛𝑢𝑎𝑟...")
+        elif option == "2":
+            os.system('python3 .gencc.py')
+            input("𝑃𝑟𝑒𝑠𝑖𝑜𝑛𝑒 𝐸𝑛𝑡𝑒𝑟 𝑝𝑎𝑟𝑎 𝑐𝑜𝑛𝑡𝑖𝑛𝑢𝑎𝑟...")
+        elif option == "3":
+            os.system('cd Nombres ; python3 generador')
+            input("𝑃𝑟𝑒𝑠𝑖𝑜𝑛𝑒 𝐸𝑛𝑡𝑒𝑟 𝑝𝑎𝑟𝑎 𝑐𝑜𝑛𝑡𝑖𝑛𝑢𝑎𝑟...")
+        elif option == "4":
+            os.system('python3 .checker.py')
+            input("𝑃𝑟𝑒𝑠𝑖𝑜𝑛𝑒 𝐸𝑛𝑡𝑒𝑟 𝑝𝑎𝑟𝑎 𝑐𝑜𝑛𝑡𝑖𝑛𝑢𝑎𝑟...")    
+        elif option == "5":
+             print("")
+             print(Fore.RED +"ℂ𝕆ℕ𝕋𝔸ℂ𝕋𝕆 𝕐 ℂℝ𝔼𝔻𝕀𝕋𝕆𝕊" + Fore.RESET) 
+             print("")
+             print(Fore.RED + "ℙ𝕣𝕠𝕡𝕚𝕖𝕥𝕒𝕣𝕚𝕒:" + Fore.GREEN + " @tufutbolista11" + Fore.RESET)
+             print(Fore.RED + "𝔽𝕖𝕔𝕙𝕒:" + Fore.GREEN + " 26/11/2024" + Fore.RESET)
+             print(Fore.RED + "𝕎𝕖𝕓:" + Fore.GREEN + " 𝔸𝕚𝕕𝕒𝕔𝕙𝕚𝕌𝕡𝕝𝕠𝕒𝕕" + Fore.RESET)
+             print(Fore.RED + "ℂ𝕒𝕟𝕒𝕝:" + Fore.GREEN + " https://t.me/+KRuei3Y9N1EwOWJh" + Fore.RESET)
+             print(Fore.RED + "𝕀𝕟𝕤𝕥𝕒𝕘𝕣𝕒𝕞:" + Fore.GREEN + " https://instagram.com/aidachimilan" + Fore.RESET)
+             print(Fore.RED + "𝕐𝕠𝕦𝕥𝕦𝕓𝕖:" + Fore.GREEN + " https://www.youtube.com/@aidachiupload" + Fore.RESET)
+             print("")
+             print(Fore.RED +"ℙ𝕒𝕣𝕒 𝕄𝕒𝕤 ℂ𝕦𝕖𝕟𝕥𝕒𝕤 𝔽𝕦𝕟𝕔𝕚𝕠𝕟𝕒𝕝𝕖𝕤" + Fore.RESET)   
+             print("")
+             print(Fore.CYAN +"𝐼𝑛𝑠𝑡𝑎𝑙𝑎𝑟 𝑃𝐼𝑃 𝑦 𝑅𝐸𝑄𝑈𝐸𝑆𝑇𝑆 𝑝𝑎𝑟𝑎 ℎ𝑎𝑐𝑒𝑟 𝑡𝑜𝑑𝑎𝑠 𝑙𝑎𝑠 𝑠𝑜𝑙𝑖𝑐𝑖𝑡𝑢𝑑𝑒𝑠." + Fore.RESET) 
+             print("")
+             print(Fore.GREEN +"𝑠𝑢𝑑𝑜 𝑎𝑝𝑡-𝑔𝑒𝑡 𝑖𝑛𝑠𝑡𝑎𝑙𝑙 𝑝𝑦𝑡ℎ𝑜𝑛3-𝑝𝑖𝑝" + Fore.RESET)   
+             print(Fore.GREEN +"𝑠𝑢𝑑𝑜 𝑝𝑖𝑝3 𝑖𝑛𝑠𝑡𝑎𝑙𝑙 𝑟𝑒𝑞𝑢𝑒𝑠𝑡𝑠" + Fore.RESET) 
+             print(Fore.GREEN +"𝑝𝑖𝑝3 𝑖𝑛𝑠𝑡𝑎𝑙𝑙 𝑐𝑜𝑙𝑜𝑟𝑎𝑚𝑎" + Fore.RESET)  
+             print("")
+             input("𝑃𝑟𝑒𝑠𝑖𝑜𝑛𝑒 𝐸𝑛𝑡𝑒𝑟 𝑝𝑎𝑟𝑎 𝑐𝑜𝑛𝑡𝑖𝑛𝑢𝑎𝑟...") 
+        elif option == "6":
+            print(Fore.GREEN + "\n¡𝑅𝑒𝑐𝑢𝑒𝑟𝑑𝑎 𝑞𝑢𝑒 𝑝𝑢𝑒𝑑𝑒𝑠 𝑜𝑏𝑡𝑒𝑛𝑒𝑟 𝑐𝑢𝑒𝑛𝑡𝑎𝑠 𝑔𝑟𝑎𝑡𝑖𝑠 𝑒𝑛 https://t.me/+KRuei3Y9N1EwOWJh :)!\n")
+            break
+        else:
+            print(Fore.RED + "\n𝑂𝑝𝑐𝑖ó𝑛 𝑛𝑜 𝑣á𝑙𝑖𝑑𝑎. 𝑃𝑜𝑟 𝑓𝑎𝑣𝑜𝑟, 𝑠𝑒𝑙𝑒𝑐𝑐𝑖𝑜𝑛𝑒 𝑢𝑛𝑎 𝑜𝑝𝑐𝑖ó𝑛 𝑣á𝑙𝑖𝑑𝑎.\n")
+
+
+if __name__ == "__main__":
+    main()
